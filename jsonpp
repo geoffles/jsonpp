@@ -1,0 +1,39 @@
+#! /bin/bash
+
+level=1
+prev=""
+
+function padLeft(){
+	for ((counter=0; counter <= $level; counter++)){
+		echo -n "  "
+	}
+}
+
+while read -n1 c
+do
+	if [ "$prev" == "," ]
+	then
+		if [ "$c" != "{" ] && [ "$c" != "[" ]
+		then			
+			echo
+			padLeft
+		fi
+	fi
+	
+	if [ "$c" == "{" ] || [ "$c" == "[" ]
+	then
+		echo $c
+		level=$((level+1))
+		padLeft
+	elif [ "$c" == "}" ] || [ "$c" == "]" ]
+	then
+		level=$((level-1))
+		echo
+		padLeft
+		echo -n $c				
+	else
+		echo -n $c
+	fi	
+	prev=$c
+done
+
